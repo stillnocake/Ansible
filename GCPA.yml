@@ -1,0 +1,25 @@
+# pip install apache-libcloud
+# Create a service account on Google Cloud Platform + private key JSON
+- name: Create instances
+  host: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    service_account_email: "email account GCP"
+    credentials_file: /tmp/ansible-service-account.json
+    project_id: "Get from GCP"
+    machine_type: n1-strandard-1
+    image: debian-7
+  
+  tasks: Launch instances
+  gce:
+      instance_names: dev
+      machine_type: "{{ machine_type }}"
+      image:  "{{ image }}"
+      service_account_email:  "{{ service_account_email }}"
+      credentials_file: "{{ credentials_file }}"
+      project_id: "{{ project_id }}"
+
+# ansible-playbook GCPA.yml
+

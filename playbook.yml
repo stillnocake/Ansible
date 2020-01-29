@@ -1,0 +1,61 @@
+# pip install apache-libcloud
+# Create a service account on Google Cloud Platform + private key JSON
+- name: Create instances
+  host: localhost
+  connection: local
+  gather_facts: no
+
+  vars:
+    service_account_email: "email account GCP"
+    credentials_file: /tmp/ansible-service-account.json
+    project_id: "Get from GCP"
+    machine_type: n1-strandard-1
+    image: debian-7
+    web_instances:
+      web-server-1, web-server-2
+    db_instances: db-server
+  
+  tasks: 
+  - name:  Launch web instances
+    gce:
+        instance_names: '{{ web_instances '
+        machine_type: "{{ machine_type }}"
+        image:  "{{ image }}"
+        service_account_email:  "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+    register: web_deploy_result
+
+  - name:  Launch db instances
+    gce:
+        instance_names: '{{ web_instances }}'
+        machine_type: "{{ machine_type }}"
+        image:  "{{ image }}"
+        service_account_email:  "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+    register: web_deploy_result
+
+  - name:  Launch db instances
+    gce:
+        instance_names: '{{ db_instances }}'
+        machine_type: "{{ machine_type }}"
+        image:  "{{ image }}"
+        service_account_email:  "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+    register: web_deploy_result
+
+  - name: Display results
+    debug: 
+      msg: 
+        - '{{ web_deploy_result }}'
+        - '{{ db_deploy_result }}'
+
+
+
+
+
+# ansible-playbook playbook.yml
+# google cloud sdk
+
