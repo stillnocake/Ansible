@@ -1,0 +1,21 @@
+- name: Install configure mysql database
+  hosts: db-server
+  become: yes
+  become_method: sudo
+  roles:
+    - python
+    - mysql_db
+
+
+- name: Install configure web server 
+  hosts: web-server-1, web-server-2
+  become: yes
+  become_method: sudo
+    
+  roles:
+    - python
+    - flask_web
+    
+
+# ansible-playbook manage-instances.yml -i inventory
+# web-server-1, web-server-2

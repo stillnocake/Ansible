@@ -1,0 +1,29 @@
+- name: set up networking
+  hosts: localhost
+  tasks:
+    - name: Allow http traffic
+      gce_net:
+        name: default
+        fwname: "allow-http"
+        allowed: tcp:80
+        state: "present"
+        src_tags: "foo,bar"
+        project_id: "{{ project_id }}"
+        credential_file: "{{ credential_file }}"
+        service_account_email: "{{ service_account_email }}"
+    
+    - name: Configure load balancer
+      gce_lb:
+       # module: gce_lb (dont need that)
+        name: testlb
+        region: us-central1
+        members: ["us-central1-a/web-server-1","us-central1-b/web-server-2"]
+        httphealthcheck_name: hc
+        httphealthcheck_port: 80
+        httphealthcheck_path: "/up"
+        project_id: "{{ project_id }}"
+        credential_file: "{{ credential_file }}"
+        service_account_email: "{{ service_account_email }}"
+
+
+

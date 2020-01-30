@@ -6,6 +6,16 @@ service_account_email: ansible@udemy-ansible-assignment.iam.gserviceaccount.com
 credentials_file: udemy-ansible-assignment-fb21ec2e17c4.json
 project_id: udemy-ansible-assignment
 
+
+service_account_email: "email account GCP"
+credentials_file: /tmp/ansible-service-account.json
+project_id: "Get from GCP"
+machine_type: n1-strandard-1
+image: debian-7
+web_instances:
+  web-server-1, web-server-2
+db_instances: db-server
+
 machine_type: n1-standard-1
 image: debian-7
 instance_list:

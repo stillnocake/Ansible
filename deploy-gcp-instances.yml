@@ -5,16 +5,6 @@
   connection: local
   gather_facts: no
 
-  vars:
-    service_account_email: "email account GCP"
-    credentials_file: /tmp/ansible-service-account.json
-    project_id: "Get from GCP"
-    machine_type: n1-strandard-1
-    image: debian-7
-    web_instances:
-      web-server-1, web-server-2
-    db_instances: db-server
-  
   tasks: 
   - name:  Launch web instances
     gce:
