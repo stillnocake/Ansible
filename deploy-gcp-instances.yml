@@ -26,24 +26,26 @@
         project_id: "{{ project_id }}"
     register: web_deploy_result
 
-  - name:  Launch db instances
-    gce:
-        instance_names: '{{ db_instances }}'
-        machine_type: "{{ machine_type }}"
-        image:  "{{ image }}"
-        service_account_email:  "{{ service_account_email }}"
-        credentials_file: "{{ credentials_file }}"
-        project_id: "{{ project_id }}"
-    register: web_deploy_result
-
   - name: Display results
     debug: 
       msg: 
         - '{{ web_deploy_result }}'
         - '{{ db_deploy_result }}'
 
+  - name: Add web-servers to in-memory inventory
+    add_host:
+     hostname: '{{ item.public_ip }}' 
+     private_ip: '{{ item.private_ip }}'
+     db_server_ip: '{{ db_deploy_result.instance_data[0].private_ip }}'
+     groupname: web_servers
+    with_items: '{{ web_deploy_result.instance_data }}' 
 
-
+  - name: Add db-servers to in-memomry inventory
+    add_host:
+     hostname: '{{ item.public_ip }}' 
+     private_ip: '{{ item.private_ip }}'
+     groupname: db_servers
+    with_items: '{{ db_deploy_result.instance_data }}' 
 
 
 # ansible-playbook playbook.yml

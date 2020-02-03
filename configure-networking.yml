@@ -25,5 +25,14 @@
         credential_file: "{{ credential_file }}"
         service_account_email: "{{ service_account_email }}"
 
+        register: load_balanccer_results
 
-
+    - name: Send notification email
+      mail: 
+        host: smtp.gmail.com
+        port: 465
+        username: "auser"
+        password: "apass"
+        to: Recipent
+        suject: Ansible Job completed successfully
+        body: 'Automation completed !! Access  your application using the URL: http://{{ load_balanccer_results.external_ip }}'
